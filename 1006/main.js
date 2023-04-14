@@ -14,33 +14,22 @@ rl.on('close', function () {
 })
 
 function solve(lines) {
-    let set = new Set();
-    let amount = Number(lines[0]);
-    let used = Number(lines[1]);
-    let ans = 1 + (amount / 2 - 1) * 3;
-    for (let i = 2; i < 2 + used; ++i) {
-        let n = Number(lines[i]);
-        set.add(Number(n));
-        ans -= 3;
-        if ((n - 2) <= 0) {
+    let used = lines.slice(2);
+    let set = new Set(used.map(e => Number(e)));
+
+    let n = Number(lines[0]);
+    let ans = -1;
+
+    for (let i = 1; i < n; ++i) {
+        if (set.has(i)) continue;
+
+        if (!set.has(i + 2)) {
             ans += 1;
         }
-        if ((n + 2 > amount)) {
-            ans += 1;
-        }
-        let x = 1;
-        if (n % 2 === 0) {
-            x = -1;
-        }
-        if (set.has(n + x)) {
-            ans += 1;
-        }
-        if (set.has(n + 2)) {
-            ans += 1;
-        }
-        if (set.has(n - 2)) {
+        if (i % 2 === 1 && !set.has(i + 1)) {
             ans += 1;
         }
     }
+
     console.log(ans);
 }
